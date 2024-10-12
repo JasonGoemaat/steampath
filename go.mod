@@ -1,6 +1,6 @@
-module steampath
+module github.com/JasonGoemaat/steampath
 
-go 1.22.2
+go 1.23.2
 
 require (
 	github.com/andygrunwald/vdf v1.1.0

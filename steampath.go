@@ -137,14 +137,8 @@ func GetApp(id string, args ...string) (*steamApp, error) {
 // identifier for a local user that I don't know how
 // to get, though I know it isn't a user's steam id. 
 func GetRemotePaths(id string) ([]string, error) {
-	libraryPaths, err := GetLibraryPaths()
-	if err != nil {
-		return nil, err
-	}
-
 	results := []string{}
-	for _, libraryPath := range libraryPaths {
-		userdataPath := filepath.Join(libraryPath, "userdata")
+		userdataPath := filepath.Join(GetSteamPath(), "userdata")
 		entries, err := os.ReadDir(userdataPath)
         if err != nil {
             return nil, err
@@ -152,7 +146,6 @@ func GetRemotePaths(id string) ([]string, error) {
 		for _, entry := range entries {
 			fmt.Println("Checking:", entry)
 		}
-	}
 	return results, nil
 }
 
