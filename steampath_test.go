@@ -2,7 +2,6 @@ package steampath
 
 import (
 	"testing"
-	"fmt"
 )
 
 func TestSteamPath(t *testing.T) {
@@ -65,7 +64,7 @@ func TestGetRemotePaths(t *testing.T) {
 	if entries == nil {
 		t.Fatal("No entries")
 	}
-	for _, entry := range entries {
-		fmt.Println(entry)
-	}
+	// for _, entry := range entries {
+	// 	fmt.Println("FOUND:", entry)
+	// }
 }
