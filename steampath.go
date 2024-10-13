@@ -10,13 +10,13 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
-type steamApp struct {
-	id         string
-	appid      string // same as 'id', but read from manifest
-	name       string // read from manifest
-	installdir string // read from manifest
-	gamePath   string // path inside locally installed folder (adding library, steamapps/common, and installdir)
-	savePath   string // impossible to know from steam config, but can set if we know it
+type SteamApp struct {
+	Id         string
+	AppId      string // same as 'id', but read from manifest
+	Name       string // read from manifest
+	InstallDir string // read from manifest
+	GamePath   string // path inside locally installed folder (adding library, steamapps/common, and installdir)
+	SavePath   string // impossible to know from steam config, but can set if we know it
 }
 
 // Get steam install path
@@ -95,7 +95,7 @@ func GetLibraryPaths() ([]string, error) {
 }
 
 // Get steam library installed game details given an id, or nil if not found
-func GetApp(id string, args ...string) (*steamApp, error) {
+func GetApp(id string, args ...string) (*SteamApp, error) {
 	manifestPath, librarypath, err := getAppManifestPath(id)
 	if err != nil {
 		return nil, err
@@ -116,16 +116,16 @@ func GetApp(id string, args ...string) (*steamApp, error) {
 
 	appState := m["AppState"].(map[string]interface{})
 
-	app := steamApp{id: id}
-	app.appid = appState["appid"].(string)
-	app.name = appState["name"].(string)
-	app.installdir = appState["installdir"].(string)
-	app.gamePath = filepath.Join(librarypath, "steamapps", "common", app.installdir)
+	app := SteamApp{Id: id}
+	app.AppId = appState["appid"].(string)
+	app.Name = appState["name"].(string)
+	app.InstallDir = appState["installdir"].(string)
+	app.GamePath = filepath.Join(librarypath, "steamapps", "common", app.InstallDir)
 	savePath, exists := knownSavePaths[id]
 	if exists {
-		app.savePath = savePath
+		app.SavePath = savePath
 	} else if len(args) > 0 {
-		app.savePath = args[0]
+		app.SavePath = args[0]
 	}
 	// fmt.Printf("%+v\n", app)
 	return &app, nil
